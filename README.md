@@ -6,7 +6,7 @@ docker-compose up --build
 
 ### Api should be accessible through the url
 
-http://localhost/rate/<basecurrency>
+http://localhost/rate/[basecurrency]
 
 e.g: http://localhost/rate/gbp
 
