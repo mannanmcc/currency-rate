@@ -2,10 +2,14 @@
 
 namespace App\Service;
 
+use App\Exception\CurrencyNotSupportedException;
 use App\Exception\RateNotFoundException;
+use Symfony\Component\HttpFoundation\Test\Constraint\ResponseStatusCodeSame;
 
 class RateProvider implements RateProviderInterface
 {
+    protected static $supportedCurrencies = ['GBP', 'USD'];
+
     /** @var ExchangeRateClient */
     private $client;
 
@@ -16,6 +20,10 @@ class RateProvider implements RateProviderInterface
 
     public function retrieveRate(string $baseCurrency, string $destinationCurrency): Rate
     {
+        if (!in_array($baseCurrency, static::$supportedCurrencies)) {
+            throw new CurrencyNotSupportedException($baseCurrency, 400);
+        }
+
         $response = $this->client->get('latest?base=' . $baseCurrency);
         if (!isset($response['rates'][$destinationCurrency])) {
             throw new RateNotFoundException();
