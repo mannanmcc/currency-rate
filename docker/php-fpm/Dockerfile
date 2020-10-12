@@ -17,9 +17,6 @@ RUN apk add --update --no-cache \
     php7-mbstring \
     php7-opcache \
     php7-openssl \
-    php7-pdo \
-    php7-pdo_mysql \
-    php7-mysqli \
     php7-xml \
     php7-zlib \
     php7-phar \
@@ -28,13 +25,7 @@ RUN apk add --update --no-cache \
     php7-simplexml \
     php7-zip \
     php7-xmlwriter \
-    make \
     curl
-
-RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \
-        && curl -sS https://getcomposer.org/installer | tee composer-setup.php | sha384sum -c composer-setup.php.sig \
-        && php composer-setup.php && rm composer-setup.php* \
-        && chmod +x composer.phar && mv composer.phar /usr/bin/composer
 
 COPY symfony.ini /etc/php7/conf.d/
 COPY symfony.ini /etc/php7/cli/conf.d/

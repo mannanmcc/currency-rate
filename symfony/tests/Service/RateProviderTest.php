@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service;
 
+use App\Exception\CurrencyNotSupportedException;
 use App\Exception\RateNotFoundException;
 use App\Service\Rate;
 use App\Service\RateClientInterface;
@@ -47,6 +48,16 @@ class RateProviderTest extends TestCase
         $rateClient->method('get')->willReturn($mockedRateResponse);
 
         $this->expectException(RateNotFoundException::class);
+        $rateProvider = new RateProvider($rateClient);
+        $rateProvider->retrieveRate($baseCurrency, $destinationCurrency);
+    }
+
+    public function testItThrowsExceptionWhenUnsupportedCurrencyProvidedInResponse(): void
+    {
+        $baseCurrency = 'JPY';
+        $destinationCurrency = 'EUR';
+        $rateClient = $this->createMock(RateClientInterface::class);
+        $this->expectException(CurrencyNotSupportedException::class);
         $rateProvider = new RateProvider($rateClient);
         $rateProvider->retrieveRate($baseCurrency, $destinationCurrency);
     }

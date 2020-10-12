@@ -22,5 +22,10 @@ services:
         volumes:
             - ./logs/nginx:/var/log/nginx:cached
             - ./symfony:/var/www/symfony:cached
+    composer:
+        image: composer:1.9
+        command: ["composer", "install"]
+        volumes:
+            - ./symfony:/app
 networks:
     php:
